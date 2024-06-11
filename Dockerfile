@@ -6,7 +6,7 @@ RUN apt-get update -y && apt-get upgrade -y \
     && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
         apt-get install -y nodejs \
     && install-php-extensions \
-        pcntl \
+        pcntl rdkafka \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

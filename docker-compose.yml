@@ -1,15 +1,32 @@
 services:
-  app:
+  producer:
     build:
       context: .
       dockerfile: ./Dockerfile
+    env_file:
+      - .env
     volumes:
       - ./:/var/www/html
       - caddy_data:/data
       - caddy_config:/config
+    command: /entrypoint.sh
+    tty: true
+    depends_on:
+      - kafka
+
+  consumer:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www/html
+      - caddy_data:/data
+      - caddy_config:/config
+    command: /entrypoint.sh
     ports:
       - 443:443
-    command: /entrypoint.sh
     tty: true
     depends_on:
       - kafka

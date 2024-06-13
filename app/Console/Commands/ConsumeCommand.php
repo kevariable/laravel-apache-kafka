@@ -7,14 +7,14 @@ use Junges\Kafka\Contracts\ConsumerMessage;
 use Junges\Kafka\Facades\Kafka;
 use function Laravel\Prompts\info as info;
 
-final class ConsumeMessage extends Command
+final class ConsumeCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'kafka:consume';
+    protected $signature = 'kafka:consume {topic*} {--group=}';
 
     /**
      * @return void
@@ -24,12 +24,12 @@ final class ConsumeMessage extends Command
     public function handle(): void
     {
         Kafka::consumer()
-            ->subscribe('logistic')
-            ->withConsumerGroupId(groupId: 'logistic')
+            ->subscribe($this->argument(key: 'topic'))
+            ->withConsumerGroupId(groupId: $this->option(key: 'group'))
             ->withHandler(function(ConsumerMessage $message) {
                 $payload = json_encode($message->getBody());
 
-                info("Key: {$message->getMessageIdentifier()} | Topic: {$message->getTopicName()} | Data: {$payload}");
+                info("Key: {$message->getKey()} -> $payload");
             })
             ->build()
             ->consume();

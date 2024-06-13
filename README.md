@@ -18,12 +18,6 @@ docker compose exec -it kafka kafka-console-consumer.sh --bootstrap-server local
 docker compose exec -it consumer php artisan kafka:consume logistic --group=logistics
 ```
 
-### Consumer
-
-```bash
-docker compose exec -it consumer php artisan kafka:consume logistic --group=logistics
-```
-
 ## Producer
 ```bash
 docker compose exec -it consumer php artisan kafka:producer 1007:Hei 1008:World --topic=logistic
